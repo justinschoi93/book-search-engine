@@ -1,4 +1,5 @@
 const { User, Book } = require('../models/');
+const {signToken, AuthenticationError} = require('../utils/auth');
 
 const resolvers = {
     Query: {
@@ -16,12 +17,28 @@ const resolvers = {
         }
     },
     Mutation: {
-        addUser: async (parent, args) => {
-            // dont forget to destructure args
-        },
-        saveBook: async (parent, args) => {
-            // dont forget to destructure args
+        addUser: async (parent, {username, email, password}) => {
+            const user = await User.create({username, email, password});
+            const token = signToken(user);
 
+            return { token, user }
+        },
+        saveBook: async (parent, {}, context) => {
+            // dont forget to destructure args
+            const book = await Book.findById();
+
+            return User.findOneAndUpdate(
+                {},
+                { $addToSet: {savedBooks: book}},
+                { new: true }
+            )
+        },
+        unSaveBook: async (parent, {}, context) => {
+            const book = await Book.findById();
+
+            return User.findOneAndUpdate(
+                {$pull: {savedbooks: book}}
+            )
         }
     }
 }
