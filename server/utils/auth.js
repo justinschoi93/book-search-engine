@@ -13,11 +13,10 @@ module.exports = {
   }),
   authMiddleware: function ({req}) {
     let token = req.query.token || req.headers.authorization;
-
     if (req.headers.authorization) {
       token = token.split(' ').pop().trim();
     }
-
+    
     if (!token) {
       return req
     }
@@ -25,6 +24,8 @@ module.exports = {
     try {
       const { data } = jwt.verify(token, secret, { maxAge: expiration });
       req.user = data;
+      // return req
+      // console.log(req.user);
     } catch {
       console.log('Invalid token');
     }
