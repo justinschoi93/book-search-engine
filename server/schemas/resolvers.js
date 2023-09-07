@@ -41,13 +41,21 @@ const resolvers = {
         },
         saveBook: async (parent, { bookId, title, authors, description, image }, context) => {
             // dont forget to destructure args
-            console.log(context.req.user)
+            // console.log(context.req.user)
             // if (!context.user) {
             //     throw AuthenticationError;
             // }
+
+            const bookData = {
+                bookId: bookId,
+                title: title, 
+                authors: authors,
+                description: description,
+                image: image
+            }
             return await User.findOneAndUpdate(
                 { _id: context.user._id },
-                { $addToSet: { savedBooks: bookToSave.bookId }},
+                { $addToSet: { savedBooks: bookData.bookId }},
                 { new: true }
             )
         },

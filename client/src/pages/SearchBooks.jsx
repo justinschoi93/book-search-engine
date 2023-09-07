@@ -56,7 +56,7 @@ const SearchBooks = () => {
         description: book.volumeInfo.description,
         image: book.volumeInfo.imageLinks?.thumbnail || '',
       }));
-
+      // console.log(bookData)
       setSearchedBooks(bookData);
       setSearchInput('');
     } catch (err) {
@@ -67,21 +67,31 @@ const SearchBooks = () => {
   const handleSaveBook = async (bookId) => {
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
     const token = Auth.loggedIn() ? Auth.getToken() : null;
-    console.log(token)
+
     if (!token) {
       return false;
     }
 
     try {
-      console.log(bookToSave)
-      // const {}
-      const {data} = await saveBook(bookToSave);
+      // console.log(bookToSave)
+      const {data} = await saveBook({
+        variables: {
+          bookId: bookToSave.bookId, 
+          title: bookToSave.title, 
+          authors: bookToSave.authors, 
+          description: bookToSave.description, 
+          image: bookToSave.image
+        }
+      });
+
       console.log(data)
+
       if (!data) {
         throw new Error('something went wrong!');
       }
 
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
+      console.log('bookId saved!');
     } catch (err) {
       console.error(err);
     }
