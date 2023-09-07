@@ -19,6 +19,8 @@
     "concurrently": "^5.1.0"
   },
   "dependencies": {
-    "mongodb": "6.0"
+    "mongodb": "6.0",
+    "serve": "^14.2.1",
+    "vite": "^4.4.9"
   }
 }
