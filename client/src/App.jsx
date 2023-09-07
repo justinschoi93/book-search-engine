@@ -8,11 +8,12 @@ import {
 import { setContext } from '@apollo/client/link/context';
 import { Outlet } from 'react-router-dom';
 
-import AppNavbar from './src/components/Navbar';
+import AppNavbar from './components/Navbar';
 
 const httpLink = createHttpLink({
-    uri: '/graphql',
+    uri: '/graphql'
   });
+// console.log(httpLink);
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('id_token');
@@ -23,13 +24,15 @@ const authLink = setContext((_, { headers }) => {
     },
   };
 });
+// console.log(authLink);
 
 const client = new ApolloClient({
     link: authLink.concat(httpLink),
+    // uri: '/graphql',
     cache: new InMemoryCache(),
   });
 
-export default App = () => {
+export default function App () {
     return (
         <ApolloProvider client={client}>
             <div className="flex-column justify-flex-start min-100-vh">
