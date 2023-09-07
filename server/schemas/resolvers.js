@@ -22,8 +22,8 @@ const resolvers = {
                 console.log(err);
             }
         },
-        login: async ( parent, { username, password }) => {
-            const user = await User.findOne({username});
+        login: async ( parent, { email, password }) => {
+            const user = await User.findOne({email});
             
             if (!user) {
                 throw AuthenticationError;
@@ -39,25 +39,18 @@ const resolvers = {
 
             return { token, user };
         },
-        saveBook: async (parent, { bookId, title, authors, description, image }, context) => {
-            // dont forget to destructure args
-            // console.log(context.req.user)
-            // if (!context.user) {
-            //     throw AuthenticationError;
-            // }
+        saveBook: async (parent, { bookData }, context) => {
+            if (context.user) {
+                const updatedUser = await User.findByIdAndUpdate(
+                    { _id: context.user._id },
+                    { $push: { savedBooks: bookData } },
+                    { new: true }
+                );
 
-            const bookData = {
-                bookId: bookId,
-                title: title, 
-                authors: authors,
-                description: description,
-                image: image
+                return updatedUser;
             }
-            return await User.findOneAndUpdate(
-                { _id: context.user._id },
-                { $addToSet: { savedBooks: bookData.bookId }},
-                { new: true }
-            )
+
+            throw AuthenticationError;
         },
         unsaveBook: async (parent, {}, context) => {
             const book = await Book.findById();
