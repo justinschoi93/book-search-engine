@@ -55,5 +55,17 @@ export const LOGIN_USER = gql`
 
 `;
 
-// export const UNSAVE_BOOK = gql`
-// `;
+export const UNSAVE_BOOK = gql`
+mutation UnsaveBook($bookId: String!) {
+  unsaveBook(bookId: $bookId) {
+    bookCount
+    savedBooks {
+      authors
+      bookId
+      description
+      image
+      title
+    }
+  }
+}
+`;
