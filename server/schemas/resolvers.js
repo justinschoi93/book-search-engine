@@ -39,15 +39,15 @@ const resolvers = {
 
             return { token, user };
         },
-        saveBook: async (parent, { bookToSave, token }, context) => {
+        saveBook: async (parent, { bookToSave }, context) => {
             // dont forget to destructure args
-            if (!token) {
+            if (!context.user) {
                 throw AuthenticationError;
             }
             console.log(context.user._id);
             return await User.findOneAndUpdate(
                 { _id: context.user._id },
-                { $addToSet: { savedBooks: bookToSave }},
+                { $addToSet: { savedBooks: bookToSave.bookId }},
                 { new: true }
             )
         },

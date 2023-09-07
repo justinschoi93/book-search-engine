@@ -21,7 +21,7 @@ module.exports = {
       token = token.split(' ').pop().trim();
     }
 
-    if (!token) {
+    if (!context) {
       return false;
     }
 
