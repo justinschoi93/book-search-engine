@@ -39,7 +39,7 @@ const resolvers = {
 
             return { token, user };
         },
-        saveBook: async (parent, { bookToSave }, context) => {
+        saveBook: async (parent, { bookId, title, authors, description, image }, context) => {
             // dont forget to destructure args
             if (!context.user) {
                 throw AuthenticationError;

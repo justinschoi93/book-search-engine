@@ -25,6 +25,7 @@ input BookType {
     description: String!
     bookId: ID!
     image: String
+    link: String
 }
 
 type Auth {
