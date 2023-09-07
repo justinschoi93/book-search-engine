@@ -11,17 +11,17 @@ module.exports = {
       code: 'UNAUTHENTICATED',
     },
   }),
-  // function for our authenticated routes
   authMiddleware: function ({req}) {
-    // allows token to be sent via  req.query or headers
     let token = req.query.token || req.headers.authorization;
 
-    // ["Bearer", "<tokenvalue>"]
     if (req.headers.authorization) {
       token = token.split(' ').pop().trim();
     }
 
-    // verify token and get user data out of it
+    if (!token) {
+      return req
+    }
+    
     try {
       const { data } = jwt.verify(token, secret, { maxAge: expiration });
       req.user = data;
