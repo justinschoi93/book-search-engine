@@ -13,7 +13,6 @@ import AppNavbar from './components/Navbar';
 const httpLink = createHttpLink({
     uri: '/graphql'
   });
-// console.log(httpLink);
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('id_token');
@@ -24,11 +23,9 @@ const authLink = setContext((_, { headers }) => {
     },
   };
 });
-// console.log(authLink);
 
 const client = new ApolloClient({
     link: authLink.concat(httpLink),
-    // uri: '/graphql',
     cache: new InMemoryCache(),
   });
 
